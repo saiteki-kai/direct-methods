@@ -10,21 +10,21 @@ include("../src/dm.jl")
 const datadir = joinpath(pwd(), "../data/matrix_market/")
 
 const data = DataFrame(;
-    N = Int64[],
-    Time = Float64[],
-    Error = Float64[],
-    Space = Int64[],
+    N=Int64[],
+    Time=Float64[],
+    Error=Float64[],
+    Space=Int64[],
 )
 
-# foreach(readdir(datadir)) do filename
-#     @printf("Loading %s...\n", filename)
-#     A, t = @timed MatrixMarket.mmread(joinpath(datadir, filename))
-#     @printf("Loaded %s [%f seconds]\n", filename, t)
+foreach(readdir(datadir)) do filename
+    @printf("Loading %s...\n", filename)
+    A, t = @timed MatrixMarket.mmread(joinpath(datadir, filename))
+    @printf("Loaded %s [%f seconds]\n", filename, t)
 
-#     T = solvematrix(A)
-#     push!(data, T)
+    T = solvematrix(A)
+    push!(data, T)
 
-#     println(T)
-# end
+    println(T)
+end
 
-# CSV.write(joinpath(pwd(), "output/data.csv"), data)
+CSV.write(joinpath(pwd(), "output/data.csv"), data)

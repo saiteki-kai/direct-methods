@@ -4,6 +4,7 @@ using Gadfly
 using Cairo
 using Fontconfig
 
+
 const filename = joinpath(pwd(), "output/data.csv")
 data = DataFrame(CSV.File(filename))
 
