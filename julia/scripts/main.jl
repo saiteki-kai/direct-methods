@@ -5,9 +5,7 @@ using DataFrames
 using CSV
 
 include("../src/dm.jl")
-
-
-const datadir = joinpath(pwd(), "../data/matrix_market/")
+include("config.jl")
 
 const data = DataFrame(;
     N=Int64[],
@@ -27,4 +25,4 @@ foreach(readdir(datadir)) do filename
     println(T)
 end
 
-CSV.write(joinpath(pwd(), "output/data.csv"), data)
+CSV.write(joinpath(outputdir, "data.csv"), data)

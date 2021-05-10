@@ -4,8 +4,11 @@ using Gadfly
 using Cairo
 using Fontconfig
 
+include("config.jl")
 
-const filename = joinpath(pwd(), "output/data.csv")
+
+const filename = joinpath(outputdir, "data.csv")
+print(filename)
 data = DataFrame(CSV.File(filename))
 
 # Transform the dataframe for the plot
@@ -24,4 +27,4 @@ const p = Gadfly.plot(
     Theme(background_color = "white"),
 )
 
-draw(PNG(joinpath(pwd(), "output/plot.png"), 15cm, 9cm; dpi = 300), p)
+draw(PNG(joinpath(outputdir, "plot.png"), 15cm, 9cm; dpi = 300), p)
