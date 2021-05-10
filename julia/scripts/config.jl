@@ -1,4 +1,12 @@
-const datadir = joinpath(pwd(), "..", "data", "matrix_market")
+function _getos()::String
+    if Sys.iswindows()
+        "windows"
+    elseif Sys.islinux()
+        "linux"
+    else
+        lowercase(string(Sys.KERNEL))
+    end
+end
 
-const os = lowercase(string(Sys.KERNEL))
-const outputdir = joinpath(pwd(), "output", os)
+const DATA_DIR = joinpath(pwd(), "..", "data", "matrix_market")
+const OUTPUT_DIR = mkpath(joinpath(pwd(), "output", _getos()))

@@ -7,16 +7,11 @@ include("./config.jl")
 include("../src/DirectMethod.jl")
 
 
-const data = DataFrame(;
-    N=Int64[],
-    Time=Float64[],
-    Error=Float64[],
-    Space=Int64[],
-)
+const data = DataFrame(; N=Int64[], Time=Float64[], Error=Float64[], Space=Int64[])
 
-foreach(readdir(datadir)) do filename
+foreach(readdir(DATA_DIR)) do filename
     @printf("Loading %s...\n", filename)
-    A, t = @timed MatrixMarket.mmread(joinpath(datadir, filename))
+    A, t = @timed MatrixMarket.mmread(joinpath(DATA_DIR, filename))
     @printf("Loaded %s [%f seconds]\n", filename, t)
 
     T = solvematrix(A)
@@ -25,4 +20,4 @@ foreach(readdir(datadir)) do filename
     @printf("%s\n\n", T)
 end
 
-CSV.write(joinpath(outputdir, "data.csv"), data)
+CSV.write(joinpath(OUTPUT_DIR, "data.csv"), data)
