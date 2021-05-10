@@ -1,11 +1,11 @@
 using Printf
-
 using MatrixMarket
 using DataFrames
 using CSV
 
-include("../src/dm.jl")
-include("config.jl")
+include("./config.jl")
+include("../src/DirectMethod.jl")
+
 
 const data = DataFrame(;
     N=Int64[],
@@ -22,7 +22,7 @@ foreach(readdir(datadir)) do filename
     T = solvematrix(A)
     push!(data, T)
 
-    println(T)
+    @printf("%s\n\n", T)
 end
 
 CSV.write(joinpath(outputdir, "data.csv"), data)
