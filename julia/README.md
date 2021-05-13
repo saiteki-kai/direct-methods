@@ -22,15 +22,19 @@ Generate a plot from the csv and save it as a png file
 julia --project scripts/plot.jl
 ```
 
-## Notes
+## Notes (from documentation - [docs.julialang.org](https://docs.julialang.org/))
+
+### Julia Types
 
 Multiple dispatch together with the flexible parametric type system give Julia its ability to abstractly express high-level algorithms decoupled from implementation details, yet generate efficient, specialized code to handle each case at run time.
+
+### Dense Matrices
 
 If A is upper or lower triangular (or diagonal), no factorization of A is required and the system is solved with either forward or backward substitution.
 
 For non-triangular square matrices, an LU factorization is used.
 
-### Dense Matrices
+For rectangular A the result is the minimum-norm least squares solution computed by a pivoted QR factorization of A and a rank estimate of A based on the R factor.
 
 [source](https://github.com/JuliaLang/julia/blob/6aaedecc447e3d8226d5027fb13d0c3cbfbfea2a/stdlib/LinearAlgebra/src/generic.jl#L1122-L1139)
 
