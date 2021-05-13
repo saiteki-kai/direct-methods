@@ -28,6 +28,31 @@ julia --project scripts/plot.jl
 
 Multiple dispatch together with the flexible parametric type system give Julia its ability to abstractly express high-level algorithms decoupled from implementation details, yet generate efficient, specialized code to handle each case at run time.
 
+### Sparse Arrays
+
+In Julia, sparse matrices are stored in the **Compressed Sparse Column (CSC)** format. Julia sparse matrices have the type SparseMatrixCSC{Tv,Ti}, where Tv is the type of the stored values, and Ti is the integer type for storing column pointers and row indices. The internal representation of SparseMatrixCSC is as follows:
+
+```julia
+struct SparseMatrixCSC{Tv,Ti<:Integer} <: AbstractSparseMatrixCSC{Tv,Ti}
+    m::Int                  # Number of rows
+    n::Int                  # Number of columns
+    colptr::Vector{Ti}      # Column j is in colptr[j]:(colptr[j+1]-1)
+    rowval::Vector{Ti}      # Row indices of stored values
+    nzval::Vector{Tv}       # Stored values, typically nonzeros
+end
+```
+
+The compressed sparse column storage makes it easy and quick to access the elements in the column of a sparse matrix, whereas accessing the sparse matrix by rows is considerably slower. Operations such as insertion of previously unstored entries one at a time in the CSC structure tend to be slow. This is because all elements of the sparse matrix that are beyond the point of insertion have to be moved one place over.
+
+### Linear Algebra
+
+Linear algebra functions in Julia are largely implemented by calling functions from LAPACK. Sparse matrix factorizations call functions from SuiteSparse. Other sparse solvers are available as Julia packages.
+
+Julia features a rich collection of special matrix types, which allow for fast computation with specialized routines that are specially developed for particular matrix types.
+The special matrices hooks to various optimized methods for them in LAPACK.
+
+Julia provides many factorizations which can be used to speed up problems such as linear solve or matrix exponentiation by pre-factorizing a matrix into a form more amenable (for performance or memory reasons) to the problem.
+
 ### Dense Matrices
 
 Matrix division using a polyalgorithm. For input matrices A and B, the result X is such that A*X == B when A is square. The solver that is used depends upon the structure of A.
