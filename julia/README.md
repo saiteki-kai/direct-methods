@@ -2,10 +2,19 @@
 
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 
-## Install packages
+| Package       | Version |
+|:--------------|:-------:|
+| MatrixMarket  |  0.3.1  |
+| DataFrames    |  1.1.1  |
+| CSV           |  0.8.4  |
+| Gadfly        |  1.3.3  |
+| Fontconfig    |  0.4.0  |
+| Cairo         |  1.0.5  |
+
+## Install Packages
 
 ```bash
-julia --project -e "using Pkg; Pkg.instantiate(); Pkg.precompile()"
+julia --project=. -e "using Pkg; Pkg.instantiate(); Pkg.precompile()"
 ```
 
 ## Execution
@@ -13,18 +22,20 @@ julia --project -e "using Pkg; Pkg.instantiate(); Pkg.precompile()"
 Compute the measures and save them in a csv file
 
 ```bash
-julia --project scripts/main.jl
+julia --project=. scripts/main.jl
 ```
 
 Generate a plot from the csv and save it as a png file
 
 ```bash
-julia --project scripts/plot.jl
+julia --project=. scripts/plot.jl
 ```
 
 ## Notes (from [docs.julialang.org](https://docs.julialang.org/))
 
 ### Julia Types
+
+Julia's type system is dynamic, but gains some of the advantages of static type systems by making it possible to indicate that certain values are of specific types. This can be of great assistance in generating efficient code, but even more significantly, it allows method dispatch on the types of function arguments to be deeply integrated with the language.
 
 Multiple dispatch together with the flexible parametric type system give Julia its ability to abstractly express high-level algorithms decoupled from implementation details, yet generate efficient, specialized code to handle each case at run time.
 
