@@ -22,13 +22,15 @@ Generate a plot from the csv and save it as a png file
 julia --project scripts/plot.jl
 ```
 
-## Notes (from documentation - [docs.julialang.org](https://docs.julialang.org/))
+## Notes (from [docs.julialang.org](https://docs.julialang.org/))
 
 ### Julia Types
 
 Multiple dispatch together with the flexible parametric type system give Julia its ability to abstractly express high-level algorithms decoupled from implementation details, yet generate efficient, specialized code to handle each case at run time.
 
 ### Dense Matrices
+
+Matrix division using a polyalgorithm. For input matrices A and B, the result X is such that A*X == B when A is square. The solver that is used depends upon the structure of A.
 
 If A is upper or lower triangular (or diagonal), no factorization of A is required and the system is solved with either forward or backward substitution.
 
@@ -60,6 +62,10 @@ end
 ```
 
 ### Sparse Matrices
+
+When A is sparse, a similar polyalgorithm is used. For indefinite matrices, the LDLt factorization does not use pivoting during the numerical factorization and therefore the procedure can fail even for invertible matrices.
+
+Sparse matrix solvers call functions from SuiteSparse (CHOLMOD, UMFPACK, SPQR).
 
 [source](https://github.com/JuliaLang/julia/blob/248c02f531948a1b66bdd887906d3746fd1ccc2b/stdlib/SparseArrays/src/linalg.jl#L1538-L1558)
 
@@ -94,6 +100,8 @@ end
 ```julia
 \(A::HermOrSym{<:Any,<:StridedMatrix}, B::AbstractVector) = \(factorize(A), B)
 ```
+
+If factorize is called on a Hermitian positive-definite matrix, for instance, then factorize will return a Cholesky factorization.
 
 [source](https://github.com/JuliaLang/julia/blob/248c02f531948a1b66bdd887906d3746fd1ccc2b/stdlib/SparseArrays/src/linalg.jl#L1616-L1624)
 
