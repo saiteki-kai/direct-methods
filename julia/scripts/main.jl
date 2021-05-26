@@ -1,4 +1,3 @@
-using Printf
 using MatrixMarket
 using DataFrames
 using CSV
@@ -10,14 +9,14 @@ include("../src/DirectMethod.jl")
 const data = DataFrame(; N=Int64[], Time=Float64[], Error=Float64[], Space=Int64[])
 
 foreach(readdir(DATA_DIR)) do filename
-    @printf("Loading %s...\n", filename)
-    A, t = @timed MatrixMarket.mmread(joinpath(DATA_DIR, filename))
-    @printf("Loaded %s [%f seconds]\n", filename, t)
+    print("Loading $filename... \n")
+    A, t, m = @timed MatrixMarket.mmread(joinpath(DATA_DIR, filename))
+    print("Loaded $filename [$t seconds, $m bytes] \n")
 
     T = solvematrix(A)
     push!(data, T)
 
-    @printf("%s\n\n", T)
+    print("$T \n\n")
 end
 
 CSV.write(joinpath(OUTPUT_DIR, "data.csv"), data)
