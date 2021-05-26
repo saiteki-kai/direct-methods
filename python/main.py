@@ -38,7 +38,6 @@ def solve(A):
 
     return N, error, elapsed, peak
 
-
 def main():
     cwd = os.getcwd()
     data_dir = os.path.join(cwd, "..", "data", "matrix_market")
@@ -48,7 +47,7 @@ def main():
         filename = os.path.join(data_dir, f)
 
         print(f"Loading {f}...")
-        A = mmread(filename).tocsr()
+        A = mmread(filename).tocsc()
         print("Loaded.")
 
         N, error, elapsed, memory = solve(A)
@@ -66,7 +65,20 @@ def main():
     plt.savefig("plt.svg")
     plt.show()
 
+def test():
+	cwd = os.getcwd()
+	data_dir = os.path.join(cwd, "..", "data", "matrix_market")
+	f = "7_Hook_1498.mtx"
+	filename = os.path.join(data_dir, f)
+	
+	print(f"Loading {f}...")
+	A = mmread(filename).tocsc()
+	print("Loaded.")
+
+	N, error, elapsed, memory = solve(A)
+	print({"N": N, "time": elapsed, "error": error, "memory": memory})
+
 
 
 if __name__ == "__main__":
-    main()
+    test()
