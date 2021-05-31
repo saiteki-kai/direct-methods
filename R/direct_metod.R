@@ -32,4 +32,9 @@ for(var in file)
 }
 
 df <- data.frame(file, r_time, r_error, r_ram)
-write.csv(df, file.path("output","output.csv"))
+if(.Platform$OS.typ == "windows")
+{
+  write.csv(df, file.path("output","windows.csv"))
+} else {
+  write.csv(df, file.path("output","linux.csv"))
+}
