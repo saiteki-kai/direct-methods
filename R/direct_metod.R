@@ -1,31 +1,35 @@
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(Matrix, microbenchmark)
+pacman::p_load(Matrix, microbenchmark, profmem)
 
 library(Matrix)
 library(microbenchmark)
+library(profmem)
 
-path=""
-file <- c("G3_circuit/G3_circuit.mtx","GT01R/GT01R.mtx",
-        "Hook_1498/Hook_1498.mtx", "ifiss_mat/ifiss_mat.mtx",
-        "nd24k/nd24k.mtx", "ns3Da/ns3Da.mtx", "TSC_OPF_1047/TSC_OPF_1047.mtx")
+path <- file.path("..","data","matrix_market")
+file <- c("0_GT01R.mtx","1_TSC_OPF_1047.mtx","2_ns3Da.mtx","3_nd24k.mtx",
+          "4_ifiss_mat.mtx", "5_bundle_adj.mtx","6_G3_circuit.mtx")
 
 r_time <- c()
 r_error <- c()
+r_ram <- c()
 
 for(var in file)
 {
-  a <- readMM(paste(path,"ns3Da/ns3Da.mtx", sep = ""))
+  ram<-profmem({
+  a <- readMM(file.path(path,var))
   xe <- rep(1,nrow(a))
   xe<-t(t(xe))
   b <- a%*%xe
-  a<-chol(a)
-  time <- microbenchmark(x <- solve(a,b,sparse=FALSE),times = 1)
+  time <- microbenchmark(x <- solve(a,b),times = 1)
   time<-(as.numeric(time))[2]/1000000 # per andare a milli secondi
   error <- norm(x-xe)/norm(xe)
+  })
+  ram <- sum(ram[[2]])
   
   r_time <- c(r_time, c(time))
   r_error <- c(r_error, c(error))
+  r_ram <- c(r_ram, c(ram))
 }
 
-df <- data.frame(file, r_time, r_error)
-write.csv(df, "output/output.csv")
+df <- data.frame(file, r_time, r_error, r_ram)
+write.csv(df, file.path("output","output.csv"))
