@@ -4,11 +4,11 @@ using Gadfly
 using Cairo
 using Fontconfig
 
-include("./config.jl")
+include("./utils.jl")
 
 
 # Read the data from CSV as a dataframe
-data = CSV.File(joinpath(OUTPUT_DIR, "data.csv")) |> DataFrame
+data = CSV.File(joinpath(OUTPUT_DIR, "$(getos()).csv")) |> DataFrame
 
 # Transform the dataframe for the plot
 data = stack(data, [:Time, :Error, :Space])
@@ -28,4 +28,4 @@ const p = Gadfly.plot(
 )
 
 # Save the plot
-draw(PNG(joinpath(OUTPUT_DIR, "plot.png"), 15cm, 9cm; dpi=300), p)
+draw(PNG(joinpath(OUTPUT_DIR, "$(getos()).png"), 15cm, 9cm; dpi=300), p)

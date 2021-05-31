@@ -2,7 +2,7 @@ using MatrixMarket
 using DataFrames
 using CSV
 
-include("./config.jl")
+include("./utils.jl")
 include("../src/DirectMethod.jl")
 
 
@@ -19,4 +19,4 @@ foreach(readdir(DATA_DIR)) do filename
     print("$T \n\n")
 end
 
-CSV.write(joinpath(OUTPUT_DIR, "data.csv"), data)
+CSV.write(joinpath(OUTPUT_DIR, "$(getos()).csv"), data)

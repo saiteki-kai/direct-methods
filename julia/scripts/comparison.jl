@@ -23,8 +23,8 @@ end
 
 # TODO: change paths
 
-data1 = CSV.File(joinpath(pwd(), "output", "linux", "data.csv")) |> DataFrame
-data2 = CSV.File(joinpath(pwd(), "output", "windows", "data.csv")) |> DataFrame
+data1 = CSV.File(joinpath(pwd(), "output", "linux.csv")) |> DataFrame
+data2 = CSV.File(joinpath(pwd(), "output", "windows.csv")) |> DataFrame
 
 data = vcat(data1, data2, source=:OS => ["linux", "windows"])
 

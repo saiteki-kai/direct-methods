@@ -1,4 +1,4 @@
-function _getos()::String
+function getos()::String
     if Sys.iswindows()
         "windows"
     elseif Sys.islinux()
@@ -8,5 +8,6 @@ function _getos()::String
     end
 end
 
+
 const DATA_DIR = joinpath(pwd(), "..", "data", "matrix_market")
-const OUTPUT_DIR = mkpath(joinpath(pwd(), "output", _getos()))
+const OUTPUT_DIR = mkpath(joinpath(pwd(), "output"))
