@@ -1,6 +1,7 @@
 import os
 import time
-import tracemalloc
+import psutil
+#import tracemalloc
 
 import numpy as np
 import pandas as pd
@@ -20,7 +21,7 @@ def solve(A):
     b = A.dot(e)
 
     start = time.time()
-    tracemalloc.start()
+    #tracemalloc.start()
 
     try:
         factor = cholesky(A)
@@ -33,13 +34,19 @@ def solve(A):
     elapsed = end - start
     error = norm(x - e) / norm(e)
 
-    current, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
+    memory = psutil.virtual_memory().used + psutil.swap_memory().used
 
-    return N, error, elapsed, peak
+    #current, peak = tracemalloc.get_traced_memory()
+    #snapshot = tracemalloc.take_snapshot()
+    #for stat in snapshot.statistics("lineno"):
+    #    print(stat)
+    #tracemalloc.stop()
+
+    return N, error, elapsed, memory
 
 def main():
     cwd = os.getcwd()
+    curr_os = os.uname()[0].lower()
     data_dir = os.path.join(cwd, "..", "data", "matrix_market")
 
     data = []
@@ -50,20 +57,14 @@ def main():
         A = mmread(filename).tocsc()
         print("Loaded.")
 
-        N, error, elapsed, memory = solve(A)
-        print({"N": N, "time": elapsed, "error": error, "memory": memory})
+        N, error, time, space = solve(A)
+        print({"N": N, "Time": time, "Error": error, "Space": space})
 
-        data.append({"N": N, "time": elapsed, "error": error, "memory": memory})
+        data.append({"N": N, "Time": time, "Error": error, "Space": space})
 
     df = pd.DataFrame(data)
-    df = df.melt(["N"], ["error", "time", "memory"])
-    df.to_csv('./python_results.csv')
-
-    sns.set_style("darkgrid")
-    grid = sns.lineplot(x="N", y="value", data=df, hue="variable")
-    grid.set(xscale="log", yscale="log")
-    plt.savefig("plt.svg")
-    plt.show()
+    output_path = os.path.join("output", "{}.csv".format(curr_os))
+    df.to_csv(output_path)
 
 def test():
 	cwd = os.getcwd()
@@ -75,10 +76,10 @@ def test():
 	A = mmread(filename).tocsc()
 	print("Loaded.")
 
-	N, error, elapsed, memory = solve(A)
-	print({"N": N, "time": elapsed, "error": error, "memory": memory})
+	N, error, time, space = solve(A)
+	print({"N": N, "Time": time, "Error": error, "Space": space})
 
 
 
 if __name__ == "__main__":
-    test()
+    main()
