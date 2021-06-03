@@ -21,8 +21,8 @@ save_plot <- function(data, variable, group, path) {
       labels = scales::trans_format("log10", scales::math_format(10 ^ .x))
     ) +
     annotation_logticks(sides = "trbl") +
-    ylab(ylabel) # +
-  # theme(text = element_text(size = 18))
+    xlab("NNZ") +
+    ylab(ylabel)
 
   filename <- file.path(path, paste0(variable, ".png"))
 
@@ -45,6 +45,8 @@ save_plot_all <- function(data, group, path) {
   }
 }
 
+nnz <- c(430909, 2012833, 1679599, 28715634, 3599932, 20207907, 7660826)
+
 # Languages Comparison
 for (lang in c("julia", "matlab", "python", "R")) {
   path <- file.path("..", lang, "output")
@@ -58,6 +60,10 @@ for (lang in c("julia", "matlab", "python", "R")) {
 
     dataL$OS <- "linux"
     dataW$OS <- "windows"
+
+    # switch N to nnz
+    dataL$N <- nnz
+    dataW$N <- nnz
 
     data <- rbind(dataL, dataW)
 
@@ -76,6 +82,9 @@ for (os in c("linux", "windows")) {
     if (file.exists(path)) {
       csv <- read.csv(path)
       csv$lang = lang
+      
+      # switch N to nnz
+      csv$N <- nnz
 
       data <- dplyr::bind_rows(data, csv)
     }
