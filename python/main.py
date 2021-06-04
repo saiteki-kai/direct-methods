@@ -1,6 +1,7 @@
 import os
 import time
 import psutil
+import platform
 #import tracemalloc
 
 import numpy as np
@@ -46,7 +47,7 @@ def solve(A):
 
 def main():
     cwd = os.getcwd()
-    curr_os = os.uname()[0].lower()
+    curr_os = platform.system().lower() #os.uname()[0].lower()
     data_dir = os.path.join(cwd, "..", "data", "matrix_market")
 
     data = []
