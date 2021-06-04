@@ -5,8 +5,9 @@ library(Matrix)
 library(profmem)
 
 path <- file.path("..", "data", "matrix_market")
+#"3_nd24k.mtx"
 names <- c( 
-  "0_GT01R.mtx", "1_TSC_OPF_1047.mtx", "2_ns3Da.mtx", "3_nd24k.mtx",
+  "0_GT01R.mtx", "1_TSC_OPF_1047.mtx", "2_ns3Da.mtx",
   "4_ifiss_mat.mtx", "5_bundle_adj.mtx", "6_G3_circuit.mtx"
 )
 
