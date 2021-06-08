@@ -26,7 +26,7 @@ def solve(A):
         factor = cholesky(A)
         x = factor(b)
     except CholmodNotPositiveDefiniteError:
-        print('not positive matrix')
+        print("not positive matrix")
         x = spsolve(A, b).reshape([N, 1])
     end = time.time()
 
@@ -36,6 +36,7 @@ def solve(A):
     memory = process.memory_full_info().uss
 
     return N, error, elapsed, memory
+
 
 def main():
     cwd = os.getcwd()
@@ -57,7 +58,8 @@ def main():
 
     df = pd.DataFrame(data)
     output_path = os.path.join("output", "{}.csv".format(curr_os))
-    df.to_csv(output_path)
+    df.to_csv(output_path, index = False)
+
 
 def test():
 	cwd = os.getcwd()
