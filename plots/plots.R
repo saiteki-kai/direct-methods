@@ -1,3 +1,6 @@
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(ggplot2, dplyr)
+
 library(ggplot2)
 library(dplyr)
 
