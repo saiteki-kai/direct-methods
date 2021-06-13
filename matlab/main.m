@@ -1,11 +1,14 @@
 clear;
 close all;
 
-os = 'linux';
-names = ["0_GT01R.mat","1_TSC_OPF_1047.mat", ...
-    "2_ns3Da.mat","3_nd24k.mat","4_ifiss_mat.mat", ...
-    "5_bundle_adj.mat","6_G3_circuit.mat"];
+if isunix:
+    os = 'linux';
+else if ispc:
+    os = 'windows';
 
+names = ["0_GT01R.mat","1_TSC_OPF_1047.mat", ...
+    "2_ns3Da.mat","4_ifiss_mat.mat", ...
+    "5_bundle_adj.mat","6_G3_circuit.mat"];
 datadir = fullfile("..", "data", "matlab");
 
 data = [];
